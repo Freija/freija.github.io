@@ -16,3 +16,8 @@ github_username:  freija
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
+
+# Add the collections
+collections:
+- projects

@@ -2,6 +2,8 @@
 layout: post
 title: "Ugly plot spot"
 date: 2017-08-19
+tags:
+- visualization
 ---
 When I was working at the Lawrence Berkeley National Lab, I started the wall of fame/shame called the Ugly Plot Spot.
 

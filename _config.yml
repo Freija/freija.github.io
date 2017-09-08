@@ -20,4 +20,6 @@ highlighter: rouge
 
 # Add the collections
 collections:
-- projects
+  projects:
+    # Set this to make sure the project urls are created
+    output: true

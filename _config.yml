@@ -16,3 +16,10 @@ github_username:  freija
 
 # Build settings
 markdown: kramdown
+highlighter: rouge
+
+# Add the collections
+collections:
+  projects:
+    # Set this to make sure the project urls are created
+    output: true

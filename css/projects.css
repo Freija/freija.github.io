@@ -1,0 +1,17 @@
+body {
+  box-sizing: border-box;
+  height: 100%;
+  background: #336633;
+}
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+.box {
+  width: 200px;
+  height: 250px;
+  background: white;
+  float: left;
+  margin: 20px;
+}

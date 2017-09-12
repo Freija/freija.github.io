@@ -1,0 +1,21 @@
+---
+layout: default
+title: Projects
+---
+<div class="blurb">
+	<h1>projects</h1>
+	<p> A list of projects I worked on. Click on a project to find out more.</p>
+	</thead>
+</div><!-- /.blurb -->
+<div class="wrapper">
+{% for project in site.projects %}
+  <div class="box">
+		<div class="project_box">
+			<a href={{ project.url }}><h2>{{ project.title }}</h2></a>
+			<p> {{ project.super_short_description}}</p>
+			<img src="{{ site.baseurl }}/images/{{ project.thumbnail }}" style="border:1px; width: 100%;"/>
+		</div>
+	</div>
+{% endfor %}
+</div>
+<!--wrapper-->

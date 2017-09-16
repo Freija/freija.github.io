@@ -8,7 +8,8 @@ Welcome. I am an experimental physicist interested in experimental design, data,
 
 # Current projects
 {% for project in site.projects reversed%}
-<h2>{{ project.title }}</h2>
+
+<h2><a href='{{ project.url }}'>{{ project.title }}</a></h2>
 <ul class="tags">
 {% for tag in project.tags %}
   <li><a href="/tags#{{ tag }}" class="tag">{{ tag }}</a></li>
@@ -18,6 +19,8 @@ Welcome. I am an experimental physicist interested in experimental design, data,
 {{ project.long_description}}
 <br>
 The code is on Github: <a href="{{ project.github_link }}">{{project.github_link}}</a>.
+<br>
+Check out all details on the [project page]({{ project.url }}).
 {% break %}
 {% endfor %}
 

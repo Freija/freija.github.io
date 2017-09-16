@@ -290,7 +290,7 @@ From the html side, all that is needed is:
 {% highlight html %}
 <div id="map"></div>
 <script src="/index.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ ACCESS_KEY }}&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<pass your key here>&callback=initMap"></script>
 {% endhighlight %}
 
 The Javascript in ```index.js``` is adapted from the Google Maps example: [https://developers.google.com/maps/documentation/javascript/adding-a-google-map](https://developers.google.com/maps/documentation/javascript/adding-a-google-map). It is as simple as loading the coordinates from the local CSV files and pass them on to the template. Then, a loop through the coordinates allows to create the appropriate markers and content for the information windows that open when clicking on the markers. We have three type of markers:

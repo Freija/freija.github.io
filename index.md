@@ -25,7 +25,7 @@ Check out all details on the [project page]({{ project.url }}).
 {% endfor %}
 
 
-# Last blog post
+# Last blog posts
 {% for post in site.posts limit: 5%}
   <li><span>{{ post.date | date_to_string }}</span> » <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
     {% for tag in post.tags %}

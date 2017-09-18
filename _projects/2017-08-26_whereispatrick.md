@@ -14,13 +14,13 @@ Whereispatrick.at displays the GPS coordinates on a Google Map. It also shows th
 <br>
 This is a Flask website and API. The text messages are handled by Twilio.The sklearn DBSCAN clustering algorithm is used to cluster photos that are taken close together. Docker is used for testing and deployment."
 tags:
-- Docker
-- Twilio
+- docker
+- twilio
 - sklearn
-- Flask
-- Flask API
-- Google Map API
-- Google Drive API
+- flask
+- flask api
+- google map api
+- google drive api
 ---
 # whereispatrick.at
 ### A website to display GPS coordinates and geo-tagged photos on a single Google Map.

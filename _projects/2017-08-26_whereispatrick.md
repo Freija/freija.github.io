@@ -213,20 +213,21 @@ The [Google Drive API Python example](https://developers.google.com/drive/v3/web
 
 In this case, I only had to get the authorization once. The resulting credentials are saved locally and shared with the appropriate docker containers. Once the authorization is in order, the photos can be accessed using the ```apiclient``` module, see ```images.py``` here: [https://github.com/Freija/whereispatrick/blob/master/images/images.py](https://github.com/Freija/whereispatrick/blob/master/images/images.py). In that code, the images are downloaded and converted to a smaller thumbnail format using ```PIL```. The full-sized images are then deleted. The GPS coordinates are part of the EXIF information. This is accessed using the ```piexif``` module. The piece of info we want is in the GPS section of the EXIF. This can be different for different camera models. In this case, this is the format of that info (example data):
 
-```
+{% highlight javascript %}
 {
-0: (2, 2, 0, 0),                          GPS tag version
-1: 'S',                                   North or South latitude
-2: ((11, 1), (52, 1), (261135, 10000)),   latitude
-3: 'W',                                   East or West longitude
-4: ((75, 1), (17, 1), (398785, 10000)),   longitude
-5: 0,                                     altitude reference level
-6: (3422, 1),                             altitude
-7: ((15, 1), (29, 1), (10, 1)),           time
-27: some crazy stuff,                     undefined data (?)
-29: '2017:07:12'                          date
+  0: (2, 2, 0, 0),                          GPS tag version
+  1: 'S',                                   North or South latitude
+  2: ((11, 1), (52, 1), (261135, 10000)),   latitude
+  3: 'W',                                   East or West longitude
+  4: ((75, 1), (17, 1), (398785, 10000)),   longitude
+  5: 0,                                     altitude reference level
+  6: (3422, 1),                             altitude
+  7: ((15, 1), (29, 1), (10, 1)),           time
+  27: some crazy stuff,                     undefined data (?)
+  29: '2017:07:12'                          date
 }
-```
+{% endhighlight %}
+
 The thumbnails are saved to disk and served from a separate nginx docker. The coordinates of the photo location and image name is saved to a local CSV file in the following format:
 
 ```
@@ -289,7 +290,7 @@ From the html side, all that is needed is:
 {% highlight html %}
 <div id="map"></div>
 <script src="/index.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ ACCESS_KEY }}&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<pass your key here>&callback=initMap"></script>
 {% endhighlight %}
 
 The Javascript in ```index.js``` is adapted from the Google Maps example: [https://developers.google.com/maps/documentation/javascript/adding-a-google-map](https://developers.google.com/maps/documentation/javascript/adding-a-google-map). It is as simple as loading the coordinates from the local CSV files and pass them on to the template. Then, a loop through the coordinates allows to create the appropriate markers and content for the information windows that open when clicking on the markers. We have three type of markers:

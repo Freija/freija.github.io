@@ -12,7 +12,8 @@ As part of a data-science workshop in August 2016 organized at UC Berkeley, my t
 
 ## Introduction
 
-The code for the recommendation API and website can be found here: [https://github.com/Freija/recontent](https://github.com/Freija/recontent). The app is now deployed on heroku: [https://recontent.herokuapp.com/](https://recontent.herokuapp.com/).
+The code for the recommendation API and website can be found here: [https://github.com/Freija/recontent](https://github.com/Freija/recontent). The app is now deployed on heroku: [https://recontent.herokuapp.com/](https://recontent.herokuapp.com/). Since this is deployed on the free tier of Heroku, the app will go to sleep after 30 minutes of inactivity. Therefore, it typically takes a few minutes to start up when accessing the website.
+
 
 This is the associated docker-compose file of the app:
 

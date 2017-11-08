@@ -7,7 +7,7 @@ title: Welcome
 Welcome. I am an experimental physicist interested in experimental design, data, science and other things. My current goal is to explore fun hardware projects and data science, in particular machine learning.
 
 # Current projects
-{% for project in site.projects reversed%}
+{% for project in site.projects reversed limit:2%}
 
 <h2><a href='{{ project.url }}'>{{ project.title }}</a></h2>
 <ul class="tags">
@@ -21,7 +21,6 @@ Welcome. I am an experimental physicist interested in experimental design, data,
 The code is on Github: <a href="{{ project.github_link }}">{{project.github_link}}</a>.
 <br>
 Check out all details on the [project page]({{ project.url }}).
-{% break %}
 {% endfor %}
 
 

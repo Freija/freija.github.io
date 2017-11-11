@@ -197,11 +197,11 @@ latitude             longitude           altitude  date
 ```
 
 #### Quick note on Flask-restful
-Initially, I used the Flask-restful extension. However, it was not clear how to return the correct response. This meant that Twilio reported an error for every message, even if it was parsed correctly. Therefore, I switched to using the Flask request and Twilio twiml modules. This way, any error reported by Twilio is real (500 if parsing error, 404 if API is down, etc). Th
+Initially, I used the Flask-restful extension. However, it was not clear how to return the correct response. This meant that Twilio reported an error for every message, even if it was parsed correctly. Therefore, I switched to using the Flask request and Twilio twiml modules. This way, any error reported by Twilio is real (500 if parsing error, 404 if API is down, etc).
 
 <div id='GooglePhotos'/>
 ### Downloading geo-tagged photos from Google Drive
-My father takes geo-tagged photos (of some pretty amazing things) with his phone. These photos get uploaded automatically to his Google Photos account whenever he connects to wifi. However, Google Photos does not have an API. Initially, it seemed that there was no easy way to programatically access these pictures. Here is the work-around.
+My father takes geo-tagged photos (of some pretty amazing things) with his regular cellphone. These photos get uploaded automatically to his Google Photos account whenever he connects to wifi. However, Google Photos does not have an API. Initially, it seemed that there was no easy way to programatically access these pictures. Here is the work-around.
 
 Start by setting up the Google drive from the same account to have a folder pointing towards the Google Photos. This is a setting in Google Drive: go to the ```Google Photos``` tab in the Google Drive, click on the ```settings``` icon in the top right corner. When you scroll down, you will see: ``` Create a Google Photos folder Automatically put your Google Photos into a folder in My Drive```. Make sure this is set. You will then see a folder inside Google Drive named ```Google Photos```. Now, because Google Drive does have an API, you can access the photos through that folder.
 
@@ -238,13 +238,13 @@ The thumbnails are saved to disk and served from a separate nginx docker. The co
 1,  IMG_20170716_113522.jpg,  -10.946722972222222,  -75.26346586111111, 723,2017-07-16 16:35:21
 
 ```
-The first column tells us if we should plot these coordinates; images that do not have valid coordinates will not be plotted. The following columns are the image name, latitude, longitude, altitude and date. This file is also used at the time of the Google Drive download to check if we already have downloaded and processed a file. This last check is needed since there seems to be no clear order in which photos are uploaded from my father's phone. In fact, some photos might appear many days after photos from the same date.
+The first column tells us if we should plot these coordinates; images that do not have valid coordinates will not be plotted. The next columns are the image name, latitude, longitude, altitude and date. This file is also used at the time of the Google Drive download to check if we already have downloaded and processed a file. This last check is needed since there seems to be no clear order in which photos are uploaded from my father's phone. In fact, some photos might appear many days after photos from the same date.
 
 The Google Drive API allows for 1 billion requests per day, more than enough for me!
 
 <p>
 <img src="{{ site.baseurl }}/images/whereispatrick/GoogleDrive_quotas.png" alt="Google Drive API usage" style=" width: 100%;"/>
-<br><em><small>A screenshot from whereispatrick.at showing an InfoWindow of a photo-marker containing a photo thumbnail. </small></em>
+<br><em><small>Partial screenshot of the Google Drive API dashboard showing the usage versus time.</small></em>
 </p>
 
 <div id='PhotoClustering'/>
@@ -282,8 +282,7 @@ At this point, we have coordinates for the Iridium satellite phone messages and 
 
 <div id='GoogleMap'/>
 ### Plotting coordinates on single Google Map
-The last  step it to take the coordinates of both the Iridium satellite phone text messages and the geo-tagged photos (by cluster) from the Google Drive and plot them on a single map. whereispatrick.at is a small, private website and therefore the expected traffic is very low: not more than 50 loads per day. This is one of the reasons that I decided to use a map API: a lot of these have free tiers that are well within my requirements. There are multiple options for map APIs, two of which are [Mapbox](https://www.mapbox.com/) and [Google Maps](https://enterprise.google.com/maps/). I tried both and found Google Maps to be a bit easier to use and tweak to my wishes. The current version of the website uses Google Maps' Javascript API. The following Google Maps tutorial walks you through how to get and use the API key: [https://developers.google.com/maps/documentation/javascript/tutorial](https://developers.google.com/maps/documentation/javascript/tutorial)
-
+The last  step it to take the coordinates of both the Iridium satellite phone text messages and the geo-tagged photos (by cluster) from the Google Drive and plot them on a single map. whereispatrick.at is a small, private website and therefore the expected traffic is very low: not more than 50 loads per day. This is one of the reasons that I decided to use a map API: a lot of these have free tiers that are well within my requirements. There are multiple options for map APIs, two of which are [Mapbox](https://www.mapbox.com/) and [Google Maps](https://enterprise.google.com/maps/). I tried both and found Google Maps to be a bit easier to use and tweak to my wishes. The current version of the website uses Google Maps Javascript API. This API is free until exceeding 25,000 map loads per 24 hours. We should be safe! The following Google Maps tutorial walks you through how to get and use the API key: [https://developers.google.com/maps/documentation/javascript/tutorial](https://developers.google.com/maps/documentation/javascript/tutorial)
 
 From the html side, all that is needed is:
 
@@ -297,7 +296,7 @@ The Javascript in ```index.js``` is adapted from the Google Maps example: [https
 
 * Historical Iridium/satellite markers. These are the locations of the previous coordinates as parsed from the Iridium text messages. When clicking on such a marker, an ```Info Window``` ([https://developers.google.com/maps/documentation/javascript/infowindows](https://developers.google.com/maps/documentation/javascript/infowindows)) shows the date and altitude associated with that marker.
 
-* Latest Iridium/satellite marker. This is the location of the most recent Iridium text message that was received. This is the last known location of Patrick! The ```Info Window``` also shows the date and altitude.
+* Latest Iridium/satellite marker. This is the location of the most recent Iridium text message that was received, in other words... the last known location of Patrick! The ```Info Window``` also shows the date and altitude.
 
 * Photo markers. These are the locations of the photo-clusters as extracted by the clustering algorithm. The ```Info Window``` shows the thumbnails of the photos associated with that cluster.
 

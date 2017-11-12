@@ -138,4 +138,50 @@ Great. Or, wait, we got a response but there seems to be nothing bird or animal 
 ### Using Google Vision API Python Client
 Find the docs for the available client libraries here: [https://cloud.google.com/vision/docs/reference/libraries](https://cloud.google.com/vision/docs/reference/libraries).
 
-Start by setting up a service account to be able to authenticate following the recommendation: [https://cloud.google.com/docs/authentication/getting-started](https://cloud.google.com/docs/authentication/getting-started). This will make it really easy from inside the Python code.
+Start by setting up a service account to be able to authenticate following the recommendation: [https://cloud.google.com/docs/authentication/getting-started](https://cloud.google.com/docs/authentication/getting-started). This will make it really easy from inside the Python code. Save the JSON authetication file somewhere safe and set the environment variable ```GOOGLE_APPLICATION_CREDENTIALS``` to point to that file.
+
+Then, we can follow the example from the API client documentation page linked above, here it is:
+
+{% highlight python %}
+import io
+import os
+# Imports the Google Cloud client library
+from google.cloud import vision
+from google.cloud.vision import types
+def detect_labels(path):
+    """Detects labels in the file."""
+    client = vision.ImageAnnotatorClient()
+
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+
+    image = types.Image(content=content)
+
+    response = client.label_detection(image=image)
+    labels = response.label_annotations
+    print('Labels:')
+
+    for label in labels:
+        print(label.description)
+{% endhighlight %}
+
+Trying it out:
+
+{% highlight python %}
+getlabels.detect_labels('/home/freija/Projects/birdometer-ml/trainingdata/20
+17-09-20_16.25.44_4.jpg')
+
+Labels:
+flora
+leaf
+grass
+flower
+plant
+{% endhighlight %}
+And here is that image, it does have a bird, despite the labels.
+<p>
+<img src="{{ site.baseurl }}/images/birdometer/2017-09-20_16.25.44_4.jpg" alt="Google Vision API - Try it Out" style=" width: 50.5%;"/>
+<br><em><small> Birdometer image 2017-09-20_16.25.44_4.jpg, used in the python test.</small></em>
+</p>
+
+Next step would be to loop over all the images in the training set and collect the labels for each one. We can then try kNN algorithm in the label space. I'll update here once those results are in.

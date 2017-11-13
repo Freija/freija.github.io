@@ -15,6 +15,7 @@ tags:
 - raspberry pi
 - machine learning
 - image classification
+- birdometer
 ---
 # Birdometer
 ### Capturing and classifying hummingbird pictures
@@ -153,7 +154,55 @@ Then, once the best classifier has been identified , I will train and use the te
 
 The current code can be found in the Jupyter Notebook [here](https://github.com/Freija/birdometer-ml/blob/master/code/Birdometer.ipynb).
 
-**k Nearest Neighbors**<br>
+**A closer look at the data**<br>
+By doing dimensionality reduction, we can try to understand the data a bit better. Is there a clear separation between bird/non-bird pictures? If not, why not? What are the problem images and is there any other processing we can do to improve separation?
+
+As a starter, a principal component analysis (PCA) uses a Singular Value Decomposition of the data to project it, in our case, to a two dimensional space. ```sklearn.decomposition.PCS``` is used to find the principal components and the first two principal components are plotted. The following snippet is adapted from the ```sklearn``` example. ```X_train``` and ```y_train``` are the features and labels (0 or 1) for the training set.
+
+{% highlight python %}
+from sklearn.decomposition import PCA
+pca = PCA(n_components=2, svd_solver='randomized',
+          whiten=True).fit(X_train)
+birds_pca = pca.transform(X_train)
+# birds_pca is a NumPy array that contains the two components for each image.
+# [[-0.91417182 -0.58942785], ..]
+# The rest is basically just for plotting
+colors = ["#27AE60", "#E74C3C"]
+plt.figure(figsize=(15,5))
+# Set the axes limits, accounting for the marker sizes as well
+plt.xlim(birds_pca[:,0].min(), birds_pca[:,0].max() + 0.05)
+plt.ylim(birds_pca[:,1].min(), birds_pca[:,1].max() + 0.2)
+for i in range(len(birds_pca)):
+    plt.text(birds_pca[i,0], birds_pca[i,1], str(y_train[i]), color=colors[y_train[i]])
+plt.xlabel("pca1")
+plt.ylabel("pca2")
+{% endhighlight %}
+Which gives the following result:
+<p>
+<img src="{{ site.baseurl }}/images/birdometer/pca.png" alt="preprocessed" style=" width: 99.5%;"/>
+<em><small>Plot showing the two components (pca1 and pca2) as extracted by the PCA algorithm. In green (red) are the images without (with) a hummingbird.</small></em>
+</p>
+From the two-dimensional plot showing the two principal components above, it is clear that there are different clusters of images and within each cluster, both class 0 (no bird, green) and class 1 (bird, red) are represented typically. We can understand this as follows:
+
+ - The images have differences in shading and contrast depending on whether the sun is out or on the time of day.
+
+ - Each cluster is likely a cluster of images taken in similar lighting (time of day, shade, sun).
+
+ - Within a group of images taken in similar conditions, there are images with and without birds.
+
+Next, it makes sense to look at a few images to investigate. Specifically, there are two interesting groups:
+
+ * group 1: pca1 < -0.5 and pca2 > 0.5. The classes are pretty well separated in this grouping.
+
+ * group 2: pca1 > 1.0 and pca2 < 0.0. The classes seem less well separated in this grouping.
+
+This following plot shows group 1 in blue and group 2 in purple.
+<p>
+<img src="{{ site.baseurl }}/images/birdometer/pca-groups.png" alt="preprocessed" style=" width: 99.5%;"/>
+<em><small>Plot showing the two components (pca1 and pca2) as extracted by the PCA algorithm. In green (red) are the images without (with) a hummingbird.</small></em>
+</p>
+
+This project page will be updated with more insights and results as they are being uncovered and produced!
 
 <div id='Deployment'/>
 ## Current status

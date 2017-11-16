@@ -100,9 +100,9 @@ So clearly, we need to implement an image classification to tag images: bird or 
 </p>
 
 **False triggers/missed birds trade-off** <br>
-One way to deal with the false triggers is to limit the field of view of the IR sensor itself. I have experimented with different shapes (cones, tubes, etc) that limit the sensor's opening angle. This effectively reduces the false triggers. However, after some observation and testing, it became clear that this would lead to missed birds: occasions when a bird succeeds in feeding without triggering the sensor! That is much worse, in my opinion, then having to deal with a large number of false triggers.
+One way to deal with the false triggers is to limit the field of view of the IR sensor itself. I have experimented with different shapes (cones, tubes, etc) that limit the sensor's opening angle. This effectively reduces the false triggers. However, after some observation and testing, it became clear that this would lead to missed birds: occasions when a bird succeeds in feeding without triggering the sensor! That is much worse, in my opinion, than having to deal with a large number of false triggers.
 
-Once we have the image classifier deployed on the Raspberry Pi, we can even go to a continuous image-recording mode, only saving the images with birds to disk. The IR sensor signal can then serve as a tag rather than trigger.  
+Once we have the image classifier deployed on the Raspberry Pi, we can go to a continuous image-recording mode, only saving the images with birds to disk. The IR sensor signal can then serve as a tag rather than trigger.  
 
 **Sun/shade differences** <br>
 The feeder itself is located in a sunny spot of the garden. This causes the light to be very different at different times of the day. The hope is that it is possible to develop a classifier that is indifferent to this, but it is definitely something to keep in mind. It is possible to move the feeder or add shade to make the images more homogeneous if that turns out to be necessary.

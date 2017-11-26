@@ -31,12 +31,13 @@ tags:
   * [What is the Birdometer](#Whatisbirdometer)
   * [Goals](#Goals)
   * [Challenges](#Challenges)
-2. [Implementation details](#Components)
-  * [Creating the labeled data-set](#Labeling)
+2. [Image processing](#Components)
+  * [Creating and understanding the labeled data-set](#Labeling)
   * [Image preprocessing](#Preprocessing)
-  * [Image classification](#Classification)
-3. [Current status](#Deployment)
-4. [Future ideas](#Future)
+3. [Image classification](#Classification)
+  * [Overview](#Overview)
+4. [Current status](#Deployment)
+5. [Future ideas](#Future)
 
 <div id='Introduction'/>
 ## Introduction
@@ -122,7 +123,7 @@ Also, the current prototype is not watertight and the raining season is coming u
 
 
 <div id='Components'/>
-## Implementation details
+## Image processing
 <div id='Labeling'/>
 ### Creating and understanding the labeled data-set
 The first step towards creating the classifier (bird/nobird) is to manually label a set of images. This is done using a quick python script ([handscan.py](https://github.com/Freija/birdometer-ml/blob/master/code/handscan.py)). The script loops over all images (```jpg``` format) inside a directory. It also loads the CSV file that contains the labels that are already available. If an image has not been labeled yet, it displays the image using ```matplotlib.pyplot``` and asks on the command line if there is a bird or not. In addition, if there is a bird, it asks if the bird is drinking or not (beak in feeder hole). Finally it displays the answers and asks to confirm if they are correct. All answers are recorded as y/n in the CSV file behind the image name.
@@ -138,7 +139,7 @@ The labeled data is then divided into a training set (80% or 2314 images), cross
 
 <div id='Preprocessing'/>
 ### Image preprocessing
-The images are 720x480 pixels RGB, this means that the maximum number of features is 1036800. The current pre-processing reduces this to 2592 by reducing the number of pixels but keeping the RGB information.
+The images are 720x480 pixels RGB, this means that the maximum number of features is 1036800. The current pre-processing reduces this to 10368 by reducing the number of pixels but keeping the RGB information. The reduction factor is a parameter to the image processing code and can therefore easily be changed.
 <p>
 <img src="{{ site.baseurl }}/images/birdometer/preprocessed-example.png" alt="preprocessed" style=" width: 49.5%;"/>
 <img src="{{ site.baseurl }}/images/birdometer/processed-example.png" alt="processed" style=" width: 49.5%;"/>
@@ -147,8 +148,10 @@ The images are 720x480 pixels RGB, this means that the maximum number of feature
 Clearly, the preprocessed image above is very coarse and the color of the bird is similar as the background in most cases. The number of pixels can easily be tweaked in the future as part of the classifier optimization. Examples of things to try would be to increase number of pixels (increasing the number of features) and/or to cut away parts of the image that have the feeder and are not expected to contain useful pixels for the classification.
 
 <div id='Classification'/>
-### Image classification
-**Overview**<br>
+## Image classification
+
+<div id='Overview'/>
+### Overview
 The plan is to test out different classifiers algorithms to detect if there is a bird in the image or not. Currently implemented, as a baseline, is a kNN classifier using ```KNeighborsClassifier``` from ```sklearn```. Next up are logistic regression, neural network and support vector machine.
 Then, once the best classifier has been identified , I will train and use the test-set to understand the precision of the classifier. It will then be deployed on the Raspberry Pi to classify new images while in memory. The idea is to not save any image that does not have a bird. Depending on the performance, a continuous image-capture mode can be tested an implemented.
 
@@ -157,7 +160,7 @@ The current code can be found in the Jupyter Notebook [here](https://github.com/
 **A closer look at the data**<br>
 By doing dimensionality reduction, we can try to understand the data a bit better. Is there a clear separation between bird/non-bird pictures? If not, why not? What are the problem images and is there any other processing we can do to improve separation?
 
-As a starter, a principal component analysis (PCA) uses a Singular Value Decomposition of the data to project it, in our case, to a two dimensional space. ```sklearn.decomposition.PCS``` is used to find the principal components and the first two principal components are plotted. The following snippet is adapted from the ```sklearn``` example. ```X_train``` and ```y_train``` are the features and labels (0 or 1) for the training set.
+As a starter, a principal component analysis (PCA) uses a Singular Value Decomposition of the data to project it, in our case, to a two dimensional space. ```sklearn.decomposition.PCA``` is used to find the principal components and the first two principal components are plotted. The following snippet is adapted from the ```sklearn``` example. ```X_train``` and ```y_train``` are the features and labels (0 or 1) for the training set.
 
 {% highlight python %}
 from sklearn.decomposition import PCA
@@ -201,9 +204,22 @@ This following plot shows group 1 in blue and group 2 in purple.
 <img src="{{ site.baseurl }}/images/birdometer/pca-groups.png" alt="preprocessed" style=" width: 99.5%;"/>
 <em><small>Plot showing the two components (pca1 and pca2) as extracted by the PCA algorithm. In green (red) are the images without (with) a hummingbird.</small></em>
 </p>
+When looking through examples of both classes in this groups, it is clear that the shade and background play an important role in how well the classes can be separated. See examples below.
+<p>
+<img src="{{ site.baseurl }}/images/birdometer/group1_comparison.png" alt="group 1 comparison" style=" width: 99%;"/>
+<em><small> Group 1 class 1 (left) and class 0 (right) typical examples.</small></em>
+</p>
 
-This project page will be updated with more insights and results as they are being uncovered and produced!
+<p>
+<img src="{{ site.baseurl }}/images/birdometer/group2_comparison.png" alt="group 2 comparison" style=" width: 99%;"/>
+<em><small> Group 2 class 1 (left) and class 0 (right) typical examples.</small></em>
+</p>
+For group 1, there is a large contrast between the bird (in the shade) and the background (sunny). The distance in the (pca1, pca2) space is therefore larger than for group 2, where the contrast is minimal. A change to the hardware, assuring that the bird is always in the shade, can help in this example.
 
+The next step is to implement different classifiers.
+
+
+[This project page will be updated with more insights and results as they are being uncovered and produced.]
 <div id='Deployment'/>
 ## Current status
 ### Hardware

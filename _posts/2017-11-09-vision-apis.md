@@ -184,4 +184,4 @@ And here is that image, it does have a bird, despite the labels.
 <br><em><small> Birdometer image 2017-09-20_16.25.44_4.jpg, used in the python test.</small></em>
 </p>
 
-Next step would be to loop over all the images in the training set and collect the labels for each one. We can then try kNN algorithm in the label space. I'll update here once those results are in.
+Next step would be to loop over all the images in the training set and collect the labels for each one. We can then try kNN algorithm in the label space.

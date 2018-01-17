@@ -40,7 +40,7 @@ This script:
 
  3. Stores the labels and classification in a local CSV file.
 
- This resulted in 52 unique labels overall: 41 for the class 1 images (bird) and 32 for the class 0 images (no bird). There is significant overlap in labels between the two classes as we can expect from images that are so similar. The images with the birds have a larger variety of labels. This is also expected, since there is an additional element (bird) present. Using the Python ```wordcloud``` library and excluding the two most common labels: ```grass``` and ```plant```, two wordclouds are created: for the images with and without a bird. Each wordcloud shows all labels, the font size represents the frequency the label was assigned.
+ This resulted in 54 unique labels overall: 43 for the class 1 images (bird) and 33 for the class 0 images (no bird). There is significant overlap in labels between the two classes as we can expect from images that are so similar. The images with the birds have a larger variety of labels. This is also expected, since there is an additional element (bird) present. Using the Python ```wordcloud``` library and excluding the two most common labels: ```grass``` and ```plant```, two wordclouds are created: for the images with and without a bird. Each wordcloud shows all labels, the font size represents the frequency the label was assigned. The code can be found in the [Google Vision API Jupyter notebook](https://github.com/Freija/birdometer-ml/blob/master/code/Google_Vision_api.ipynb).
 
  <p>
  <img src="{{ site.baseurl }}/images/birdometer/nobird_wordcloud.png" alt="Birdometer image example" style=" width: 49.5%;"/>
@@ -50,4 +50,4 @@ This script:
  <br><em><small> Wordclouds for the classified Birdometer images without (left) and with (right) a hummingbird present in the image.</small></em>
  </p>
 
- Next up, we can use the labels of the training set to train a classifier, to be continued in the next post.
+The 'fauna' and 'bird' labels do not show up for the class 0 images, whereas they do for about 44.5% and 34% of the class 1 images respectively. The current method does not make use of the probabilities that the Google Vision API assigns to each label. It would be interesting to incorporate those as weights. Next up, we can use the labels of the training set to train a classifier, to be continued.
